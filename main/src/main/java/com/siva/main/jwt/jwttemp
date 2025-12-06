@@ -1,0 +1,103 @@
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+
+public class JwtUtil {
+
+    private static final String HMAC_ALGO = "HmacSHA256";
+
+    private static String base64UrlEncode(byte[] data) {
+        return Base64.getUrlEncoder().withoutPadding().encodeToString(data);
+    }
+
+    private static byte[] base64UrlDecode(String data) {
+        return Base64.getUrlDecoder().decode(data);
+    }
+
+    private static byte[] hmacSha256(byte[] key, String data) throws Exception {
+        Mac mac = Mac.getInstance(HMAC_ALGO);
+        SecretKeySpec secretKeySpec = new SecretKeySpec(key, HMAC_ALGO);
+        mac.init(secretKeySpec);
+        return mac.doFinal(data.getBytes(StandardCharsets.UTF_8));
+    }
+
+    public static String createJwt(String payloadJson, String secret) throws Exception {
+        String headerJson = "{\"alg\":\"HS256\",\"typ\":\"JWT\"}";
+
+        String headerPart = base64UrlEncode(headerJson.getBytes(StandardCharsets.UTF_8));
+        String payloadPart = base64UrlEncode(payloadJson.getBytes(StandardCharsets.UTF_8));
+
+        String unsignedToken = headerPart + "." + payloadPart;
+
+        byte[] signatureBytes = hmacSha256(secret.getBytes(StandardCharsets.UTF_8), unsignedToken);
+        String signaturePart = base64UrlEncode(signatureBytes);
+
+        return unsignedToken + "." + signaturePart;
+    }
+
+    public static boolean verifyJwt(String token, String secret) throws Exception {
+        String[] parts = token.split("\\.");
+        if (parts.length != 3) return false;
+
+        String headerPart = parts[0];
+        String payloadPart = parts[1];
+        String signaturePart = parts[2];
+
+        String unsignedToken = headerPart + "." + payloadPart;
+
+        byte[] expectedSig = hmacSha256(secret.getBytes(StandardCharsets.UTF_8), unsignedToken);
+        byte[] actualSig;
+
+        try {
+            actualSig = base64UrlDecode(signaturePart);
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
+
+        return constantTimeEquals(expectedSig, actualSig);
+    }
+
+    private static boolean constantTimeEquals(byte[] a, byte[] b) {
+        if (a == null || b == null) return false;
+        if (a.length != b.length) return false;
+
+        int result = 0;
+        for (int i = 0; i < a.length; i++) {
+            result |= a[i] ^ b[i];
+        }
+        return result == 0;
+    }
+
+    public static String getPayloadJson(String token) {
+        String[] parts = token.split("\\.");
+        if (parts.length != 3) return null;
+        try {
+            byte[] payloadBytes = base64UrlDecode(parts[1]);
+            return new String(payloadBytes, StandardCharsets.UTF_8);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+    }
+
+    public static void main(String[] args) throws Exception {
+        String secret = "supersecretkey123";
+
+        String payloadJson = "{"
+                + "\"sub\":\"1234567890\","
+                + "\"name\":\"John Doe\","
+                + "\"admin\":true,"
+                + "\"iat\":1516239022"
+                + "}";
+
+        String token = createJwt(payloadJson, secret);
+        System.out.println("JWT: " + token);
+
+        boolean valid = verifyJwt(token, secret);
+        System.out.println("Is valid: " + valid);
+
+        String decodedPayload = getPayloadJson(token);
+        System.out.println("Payload JSON: " + decodedPayload);
+    }
+}
+
