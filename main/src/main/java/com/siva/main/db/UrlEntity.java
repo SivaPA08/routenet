@@ -6,39 +6,61 @@ import jakarta.persistence.Entity;
 // @Table(name = "url")
 public class UrlEntity {
 
-	private String microserviceId;
 	// important cols
+	private Integer id;
 	private String urlPattern;
 	private String httpMethod;
 	private String targetUrl; // address of the url
 	private boolean authRequired;
 	private String role;
+
 	// imp cols ends
-	private String microserviceUrl;
-
-	private String name;
-
-	public String getMicroserviceId() {
-		return microserviceId;
+	public Integer getId() {
+		return id;
 	}
 
-	public String getMicroserviceUrl() {
-		return microserviceUrl;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getUrlPattern() {
+		return urlPattern;
 	}
 
-	public void setMicroserviceId(String microserviceId) {
-		this.microserviceId = microserviceId;
+	public void setUrlPattern(String urlPattern) {
+		this.urlPattern = urlPattern;
 	}
 
-	public void setMicroserviceUrl(String microserviceUrl) {
-		this.microserviceUrl = microserviceUrl;
+	public String getHttpMethod() {
+		return httpMethod;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setHttpMethod(String httpMethod) {
+		this.httpMethod = httpMethod;
 	}
+
+	public String getTargetUrl() {
+		return targetUrl;
+	}
+
+	public void setTargetUrl(String targetUrl) {
+		this.targetUrl = targetUrl;
+	}
+
+	public boolean isAuthRequired() {
+		return authRequired;
+	}
+
+	public void setAuthRequired(boolean authRequired) {
+		this.authRequired = authRequired;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
 }

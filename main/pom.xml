@@ -55,11 +55,16 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-config</artifactId>
 		</dependency>
+		<!---->
+		<!-- <dependency> -->
+		<!-- 	<groupId>org.postgresql</groupId> -->
+		<!-- 	<artifactId>postgresql</artifactId> -->
+		<!-- 	<scope>runtime</scope> -->
+		<!-- </dependency> -->
 
 		<dependency>
 			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<scope>runtime</scope>
+			<artifactId>r2dbc-postgresql</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -98,6 +103,24 @@ Retrieved 2025-12-06, License - CC BY-SA 4.0
     <groupId>org.springframework.cloud</groupId>
     <artifactId>spring-cloud-starter-bootstrap</artifactId>
 </dependency>
+  <!-- WebFlux -->
+  <dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-webflux</artifactId>
+  </dependency>
+
+  <!-- R2DBC + Spring Data R2DBC -->
+  <dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-data-r2dbc</artifactId>
+  </dependency>
+
+  <!-- Example R2DBC driver (Postgres). Use H2 or MySQL driver as needed -->
+  <dependency>
+    <groupId>io.r2dbc</groupId>
+    <artifactId>r2dbc-postgresql</artifactId>
+    <version>0.8.13.RELEASE</version>
+  </dependency>
 <!-- end -->
 
 

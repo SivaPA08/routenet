@@ -1,9 +1,11 @@
 package com.siva.main.db;
 
-import java.util.List;
+import org.springframework.data.r2dbc.repository.Query;
+import org.springframework.data.r2dbc.repository.R2dbcRepository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import reactor.core.publisher.Flux;
 
-public interface UrlRepo extends JpaRepository<UrlEntity, Integer> {
-	List<UrlEntity> findByName(String microserviceId);
+public interface UrlRepo extends R2dbcRepository<UrlEntity, Integer> {
+	@Query("SELECT * FROM url WHERE url_pattern = :urlPattern")
+	Flux<UrlEntity> findByUrlPattern(String urlPattern);
 }
