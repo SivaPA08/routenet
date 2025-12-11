@@ -1,8 +1,5 @@
 package com.siva.main.db;
 
-import jakarta.persistence.Entity;
-
-@Entity
 // @Table(name = "url")
 public class UrlEntity {
 
