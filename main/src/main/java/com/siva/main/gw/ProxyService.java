@@ -18,6 +18,8 @@ public class ProxyService {
 
 	public Mono<Void> forward(ServerWebExchange exchange, RouteDef route) {
 		ServerHttpRequest req = exchange.getRequest();
+		String targetUrl = PathRewriteUtil.buildTargetUrl(req, route);
+
 		return null;
 
 	}
