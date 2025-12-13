@@ -11,7 +11,7 @@ public final class HeaderUtil {
 	private HeaderUtil() {
 	}
 
-	public static void copyRequestHeader(HttpHeaders from, HttpHeaders to) {
+	public static void copyRequestHeaders(HttpHeaders from, HttpHeaders to) {
 
 		from.forEach((k, v) -> {
 			if (!isHopHeader(k)) {
@@ -20,8 +20,12 @@ public final class HeaderUtil {
 		});
 	}
 
-	public static void copyResponseHeader(HttpHeaders from, HttpHeaders to) {
-		return;
+	public static void copyResponseHeaders(HttpHeaders from, HttpHeaders to) {
+		from.forEach((k, v) -> {
+			if (!isHopHeader(k)) {
+				to.put(k, v);
+			}
+		});
 	}
 
 	public static boolean isHopHeader(String name) {
