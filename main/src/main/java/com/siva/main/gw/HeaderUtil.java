@@ -15,7 +15,7 @@ public final class HeaderUtil {
 
 		from.forEach((k, v) -> {
 			if (!isHopHeader(k)) {
-				to.put(k, v);
+				to.addAll(k, v);
 			}
 		});
 	}
@@ -23,7 +23,7 @@ public final class HeaderUtil {
 	public static void copyResponseHeaders(HttpHeaders from, HttpHeaders to) {
 		from.forEach((k, v) -> {
 			if (!isHopHeader(k)) {
-				to.put(k, v);
+				to.addAll(k, v);
 			}
 		});
 	}

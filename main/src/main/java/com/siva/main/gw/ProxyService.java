@@ -25,15 +25,32 @@ public class ProxyService {
 				.method(req.getMethod())
 				.uri(targetUrl)
 				.headers(h -> HeaderUtil.copyRequestHeaders(req.getHeaders(), h))
-				.body(exchange.getRequest().getBody(), DataBuffer.class) // also check with bytes[].class
+				.body(req.getBody(), DataBuffer.class)
 				.exchangeToMono(clientResponse -> {
 					exchange.getResponse().setStatusCode(clientResponse.statusCode());
-					HeaderUtil.copyResponseHeaders(clientResponse.headers().asHttpHeaders(),
-							exchange.getResponse().getHeaders());
 					return exchange.getResponse()
 							.writeWith(clientResponse.bodyToFlux(DataBuffer.class));
 				});
-
 	}
+
+	// public Mono<Void> forward(ServerWebExchange exchange, RouteDef route) {
+	// ServerHttpRequest req = exchange.getRequest();
+	// String targetUrl = PathRewriteUtil.buildTargetUrl(req, route);
+	//
+	// return webClient
+	// .method(req.getMethod())
+	// .uri(targetUrl)
+	// .headers(h -> HeaderUtil.copyRequestHeaders(req.getHeaders(), h))
+	// .body(exchange.getRequest().getBody(), DataBuffer.class) // also check with
+	// bytes[].class
+	// .exchangeToMono(clientResponse -> {
+	// exchange.getResponse().setStatusCode(clientResponse.statusCode());
+	// HeaderUtil.copyResponseHeaders(clientResponse.headers().asHttpHeaders(),
+	// exchange.getResponse().getHeaders());
+	// return exchange.getResponse()
+	// .writeWith(clientResponse.bodyToFlux(DataBuffer.class));
+	// });
+	//
+	// }
 
 }
