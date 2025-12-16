@@ -1,16 +1,30 @@
 package com.siva.main.db;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Table(name = "url")
 public class UrlEntity {
 
 	// important cols
+	@Id
+	@Column("id")
 	private Integer id;
+
+	@Column("url_pattern")
 	private String urlPattern;
+
+	@Column("http_method")
 	private String httpMethod;
-	private String targetUrl; // address of the url
+
+	@Column("target_url")
+	private String targetUrl;
+
+	@Column("auth_required")
 	private boolean authRequired;
+
+	@Column("role")
 	private String role;
 
 	// imp cols ends
