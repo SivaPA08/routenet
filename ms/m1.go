@@ -20,7 +20,7 @@ func hello(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Expecting: /hello/{name}
+	// url: /hello/{name}
 	path := strings.Trim(r.URL.Path, "/")
 	parts := strings.Split(path, "/")
 
@@ -36,7 +36,7 @@ func hello(w http.ResponseWriter, r *http.Request) {
 func main() {
 	http.HandleFunc("/health", health)
 
-	// IMPORTANT: trailing slash enables prefix matching
+	// trailing slash enables prefix match
 	http.HandleFunc("/hello/", hello)
 
 	fmt.Println("listening on :5000")
