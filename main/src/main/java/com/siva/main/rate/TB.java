@@ -22,6 +22,7 @@ public final class TB {
 
 	public synchronized boolean allowToken() { // synchronized for atomocity
 		refill();
+		System.out.println("Token=" + tokens); // should remove after testing
 		if (tokens >= COST) {
 			tokens -= COST;
 			return true;
