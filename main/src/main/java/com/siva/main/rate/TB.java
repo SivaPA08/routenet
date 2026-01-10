@@ -1,5 +1,8 @@
 package com.siva.main.rate;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public final class TB {
 	// static final long CAPACITY = 1000L;
 	private final double CAPACITY;
