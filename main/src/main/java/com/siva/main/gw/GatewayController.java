@@ -1,7 +1,7 @@
 package com.siva.main.gw;
 
 import org.springframework.http.server.reactive.ServerHttpRequest;
-import org.springframework.http.server.reactive.ServerHttpResponse;
+// import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 
@@ -24,7 +24,8 @@ public class GatewayController {
 
 	public Mono<Void> handle(ServerWebExchange exchange) {
 		ServerHttpRequest req = exchange.getRequest();
-		ServerHttpResponse res = exchange.getResponse(); // write about response later
+		// ServerHttpResponse res = exchange.getResponse(); // write about response
+		// later
 
 		String path = req.getURI().getPath();
 		String method = req.getMethod().name();
