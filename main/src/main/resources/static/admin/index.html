@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Gateway Route Configuration</title>
+</head>
+
+<body>
+
+	<h2>Add / Update Gateway Route</h2>
+
+	<form method="post" action="/admin/routes/save">
+
+		<label>ID (leave empty for new)</label><br>
+		<input type="number" name="id"><br><br>
+
+		<label>URL Pattern</label><br>
+		<input type="text" name="urlPattern" required><br><br>
+
+		<label>HTTP Method</label><br>
+		<select name="httpMethod">
+			<option value="GET">GET</option>
+			<option value="POST">POST</option>
+			<option value="PUT">PUT</option>
+			<option value="DELETE">DELETE</option>
+		</select><br><br>
+
+		<label>Target URL</label><br>
+		<input type="text" name="targetUrl" required><br><br>
+
+		<label>Auth Required</label><br>
+		<input type="checkbox" name="authRequired" value="true"><br><br>
+
+		<label>Role</label><br>
+		<input type="text" name="role"><br><br>
+
+		<button type="submit">Save Route</button>
+
+	</form>
+
+</body>
+
+</html>

@@ -34,6 +34,10 @@ public class GatewayController {
 
 	}
 
+	private boolean goToWebPage(String path) {
+		return path.startsWith("/admin");
+	}
+
 	public Mono<Void> handle(ServerWebExchange exchange) {
 		ServerHttpRequest req = exchange.getRequest();
 		// ServerHttpResponse res = exchange.getResponse(); // write about response

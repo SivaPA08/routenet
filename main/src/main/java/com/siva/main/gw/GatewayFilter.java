@@ -28,10 +28,17 @@ public class GatewayFilter implements WebFilter {
 		this.gatewayController = gatewayController;
 	}
 
+	private boolean goToWebPage(String path) {
+		return path.startsWith("/admin");
+	}
+
 	@Override
 	public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
 		// We handle everything in gatewayController. Do NOT call
 		// chain.filter(exchange).
+		if (goToWebPage(exchange.getRequest().getURI().getPath())) {
+			return chain.filter(exchange);
+		}
 		return gatewayController.handle(exchange)
 				.onErrorResume(e -> handleError(exchange, e));
 	}
