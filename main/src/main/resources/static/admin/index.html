@@ -1,42 +1,151 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+	<meta charset="UTF-8">
 	<title>Gateway Route Configuration</title>
+
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+		}
+
+		table {
+			border-collapse: collapse;
+			width: 100%;
+			margin-top: 20px;
+		}
+
+		th,
+		td {
+			border: 1px solid #444;
+			padding: 8px;
+			text-align: left;
+		}
+
+		th {
+			background-color: #eee;
+		}
+
+		h2 {
+			margin-top: 30px;
+		}
+
+		input,
+		select,
+		button {
+			margin-bottom: 10px;
+		}
+	</style>
 </head>
 
 <body>
 
 	<h2>Add / Update Gateway Route</h2>
 
-	<form method="post" action="/admin/routes/save">
+	<label>ID (leave empty for new)</label><br>
+	<input type="number" id="id"><br>
 
-		<label>ID (leave empty for new)</label><br>
-		<input type="number" name="id"><br><br>
+	<label>URL Pattern</label><br>
+	<input type="text" id="urlPattern"><br>
 
-		<label>URL Pattern</label><br>
-		<input type="text" name="urlPattern" required><br><br>
+	<label>HTTP Method</label><br>
+	<select id="httpMethod">
+		<option value="GET">GET</option>
+		<option value="POST">POST</option>
+		<option value="PUT">PUT</option>
+		<option value="DELETE">DELETE</option>
+	</select><br>
 
-		<label>HTTP Method</label><br>
-		<select name="httpMethod">
-			<option value="GET">GET</option>
-			<option value="POST">POST</option>
-			<option value="PUT">PUT</option>
-			<option value="DELETE">DELETE</option>
-		</select><br><br>
+	<label>Target URL</label><br>
+	<input type="text" id="targetUrl"><br>
 
-		<label>Target URL</label><br>
-		<input type="text" name="targetUrl" required><br><br>
+	<label>Auth Required</label><br>
+	<input type="checkbox" id="authRequired"><br>
 
-		<label>Auth Required</label><br>
-		<input type="checkbox" name="authRequired" value="true"><br><br>
+	<label>Role</label><br>
+	<input type="text" id="role"><br>
 
-		<label>Role</label><br>
-		<input type="text" name="role"><br><br>
+	<button onclick="saveRoute()">Save Route</button>
 
-		<button type="submit">Save Route</button>
+	<p id="status"></p>
 
-	</form>
+	<hr>
+
+	<h2>Existing Routes</h2>
+
+	<table>
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>URL Pattern</th>
+				<th>Method</th>
+				<th>Target URL</th>
+				<th>Auth</th>
+				<th>Role</th>
+			</tr>
+		</thead>
+		<tbody id="routesBody"></tbody>
+	</table>
+
+	<script>
+		async function loadRoutes() {
+			try {
+				const res = await fetch("/admin/display");
+				if (!res.ok) throw new Error("Failed to fetch");
+
+				const data = await res.json();
+				const tbody = document.getElementById("routesBody");
+				tbody.innerHTML = "";
+
+				data.forEach(r => {
+					const tr = document.createElement("tr");
+
+					tr.innerHTML = `
+                    <td>${r.id ?? ""}</td>
+                    <td>${r.urlPattern}</td>
+                    <td>${r.httpMethod}</td>
+                    <td>${r.targetUrl}</td>
+                    <td>${r.authRequired}</td>
+                    <td>${r.role ?? ""}</td>
+                `;
+
+					tbody.appendChild(tr);
+				});
+			} catch (e) {
+				console.error(e);
+			}
+		}
+
+		async function saveRoute() {
+			const data = {
+				id: document.getElementById("id").value || null,
+				urlPattern: document.getElementById("urlPattern").value,
+				httpMethod: document.getElementById("httpMethod").value,
+				targetUrl: document.getElementById("targetUrl").value,
+				authRequired: document.getElementById("authRequired").checked,
+				role: document.getElementById("role").value
+			};
+
+			try {
+				const res = await fetch("/admin/routes/save", {
+					method: "POST",
+					headers: {"Content-Type": "application/json"},
+					body: JSON.stringify(data)
+				});
+
+				if (!res.ok) throw new Error("Save failed");
+
+				document.getElementById("status").innerText = "Saved successfully";
+				loadRoutes(); // 🔥 refresh table after save
+			} catch (e) {
+				document.getElementById("status").innerText = "Error saving route";
+			}
+		}
+
+		// 🔥 load data on page start
+		window.onload = loadRoutes;
+	</script>
 
 </body>
 
