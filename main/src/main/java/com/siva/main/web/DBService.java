@@ -25,4 +25,8 @@ public class DBService {
 		return repo.save(urlEntity);
 	}
 
+	public Mono<Void> deleteRoute(Integer id) {
+		return repo.deleteById(id);
+	}
+
 }

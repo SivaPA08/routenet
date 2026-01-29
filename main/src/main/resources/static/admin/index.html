@@ -19,6 +19,7 @@
 		td {
 			border: 1px solid #444;
 			padding: 8px;
+			text-align: left;
 		}
 
 		th {
@@ -29,6 +30,14 @@
 		select,
 		button {
 			margin-bottom: 8px;
+		}
+
+		.delete-btn {
+			color: red;
+			font-weight: bold;
+			cursor: pointer;
+			border: none;
+			background: none;
 		}
 	</style>
 </head>
@@ -73,6 +82,7 @@
 				<th>Target</th>
 				<th>Auth</th>
 				<th>Role</th>
+				<th>Delete</th>
 			</tr>
 		</thead>
 		<tbody id="routesBody"></tbody>
@@ -90,12 +100,16 @@
 			data.forEach(r => {
 				body.innerHTML += `
         <tr>
-            <td>${r.id ?? ""}</td>
+            <td>${r.id}</td>
             <td>${r.urlPattern}</td>
             <td>${r.httpMethod}</td>
             <td>${r.targetUrl}</td>
             <td>${r.authRequired}</td>
             <td>${r.role ?? ""}</td>
+            <td>
+                <button class="delete-btn"
+                        onclick="deleteRoute(${r.id})">❌</button>
+            </td>
         </tr>`;
 			});
 		}
@@ -123,6 +137,20 @@
 				loadRoutes();
 			} else {
 				status.innerText = "ERROR";
+			}
+		}
+
+		async function deleteRoute(id) {
+			if (!confirm("Delete this route?")) return;
+
+			const res = await fetch(`/admin/routes/delete/${id}`, {
+				method: "DELETE"
+			});
+
+			if (res.ok) {
+				loadRoutes();
+			} else {
+				alert("Delete failed");
 			}
 		}
 
