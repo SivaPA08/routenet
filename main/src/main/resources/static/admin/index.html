@@ -3,55 +3,83 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>Gateway Route Config</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Gateway Route Configuration</title>
 	<link rel="stylesheet" href="admin.css">
 </head>
 
 <body>
+	<div class="container">
+		<h2>Add / Update Gateway Route</h2>
 
-	<h2>Add / Update Gateway Route</h2>
+		<div class="form-section">
+			<div class="form-group">
+				<label for="id">Route ID (optional - leave empty for new route)</label>
+				<input type="number" id="id" placeholder="Auto-generated if empty">
+			</div>
 
-	<input type="number" id="id" placeholder="ID (optional)"><br>
+			<div class="form-row">
+				<div class="form-group">
+					<label for="urlPattern">URL Pattern</label>
+					<input type="text" id="urlPattern" placeholder="/api/users/*" required>
+				</div>
 
-	<input type="text" id="urlPattern" placeholder="URL Pattern"><br>
+				<div class="form-group">
+					<label for="httpMethod">HTTP Method</label>
+					<select id="httpMethod">
+						<option>GET</option>
+						<option>POST</option>
+						<option>PUT</option>
+						<option>DELETE</option>
+					</select>
+				</div>
+			</div>
 
-	<select id="httpMethod">
-		<option>GET</option>
-		<option>POST</option>
-		<option>PUT</option>
-		<option>DELETE</option>
-	</select><br>
+			<div class="form-group">
+				<label for="targetUrl">Target URL</label>
+				<input type="text" id="targetUrl" placeholder="https://backend.example.com/api" required>
+			</div>
 
-	<input type="text" id="targetUrl" placeholder="Target URL"><br>
+			<div class="form-row">
+				<div class="form-group">
+					<div class="checkbox-group">
+						<input type="checkbox" id="authRequired">
+						<label for="authRequired">Authentication Required</label>
+					</div>
+				</div>
 
-	<label>
-		<input type="checkbox" id="authRequired"> Auth Required
-	</label><br>
+				<div class="form-group">
+					<label for="role">Required Role</label>
+					<input type="text" id="role" placeholder="admin, user, etc.">
+				</div>
+			</div>
 
-	<input type="text" id="role" placeholder="Role"><br>
+			<button onclick="saveRoute()">SAVE ROUTE</button>
+			<p id="status"></p>
+		</div>
 
-	<button onclick="saveRoute()">Save Route</button>
+		<hr>
 
-	<p id="status"></p>
-
-	<hr>
-
-	<h2>Existing Routes</h2>
-
-	<table>
-		<thead>
-			<tr>
-				<th>ID</th>
-				<th>Pattern</th>
-				<th>Method</th>
-				<th>Target</th>
-				<th>Auth</th>
-				<th>Role</th>
-				<th>Delete</th>
-			</tr>
-		</thead>
-		<tbody id="routesBody"></tbody>
-	</table>
+		<h2>Existing Routes</h2>
+		<div class="table-wrapper">
+			<table>
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>URL Pattern</th>
+						<th>Method</th>
+						<th>Target URL</th>
+						<th>Auth Required</th>
+						<th>Role</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody id="routesBody">
+					<!-- Routes will be loaded here -->
+				</tbody>
+			</table>
+		</div>
+	</div>
 
 	<script src="admin.js"></script>
 </body>

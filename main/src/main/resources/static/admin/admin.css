@@ -1,32 +1,388 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+}
 
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #000000;
+    color: #ffffff;
+}
+
+.container {
+    height: 100vh;
+    width: 100%;
+    background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+h2 {
+    color: #6db33f;
+    margin-bottom: 15px;
+    font-size: 24px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+h2::before {
+    content: '';
+    width: 5px;
+    height: 30px;
+    background: #6db33f;
+    border-radius: 2px;
+    box-shadow: 0 0 8px #6db33f;
+}
+
+.form-section {
+    background: #1a1a1a;
+    padding: 20px;
+    border-radius: 0;
+    margin-bottom: 20px;
+    border: 2px solid #6db33f;
+    box-shadow: 0 0 15px rgba(109, 179, 63, 0.2);
+}
+
+.form-group {
+    margin-bottom: 12px;
+}
+
+label {
+    display: block;
+    margin-bottom: 6px;
+    color: #6db33f;
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+input[type="text"],
+input[type="number"],
+select {
+    width: 100%;
+    padding: 10px 14px;
+    border: 2px solid #333333;
+    border-radius: 0;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    background: #0a0a0a;
+    color: #ffffff;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+select:focus {
+    outline: none;
+    border-color: #6db33f;
+    box-shadow: 0 0 10px rgba(109, 179, 63, 0.3);
+    background: #000000;
+}
+
+input[type="text"]::placeholder,
+input[type="number"]::placeholder {
+    color: #666666;
+}
+
+select {
+    cursor: pointer;
+}
+
+select option {
+    background: #0a0a0a;
+    color: #ffffff;
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: #6db33f;
+    border: 2px solid #6db33f;
+}
+
+.checkbox-group label {
+    margin: 0;
+    cursor: pointer;
+    user-select: none;
+    color: #ffffff;
+    text-transform: none;
+}
+
+button {
+    background: #6db33f;
+    color: #000000;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 0;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(109, 179, 63, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+button:hover {
+    background: #5a9633;
+    box-shadow: 0 0 25px rgba(109, 179, 63, 0.6);
+    transform: translateY(-2px);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+#status {
+    margin-top: 12px;
+    padding: 10px 14px;
+    border-radius: 0;
+    font-weight: 600;
+    text-align: center;
+    min-height: 20px;
+    font-size: 13px;
+}
+
+#status:not(:empty) {
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+hr {
+    border: none;
+    height: 2px;
+    background: #6db33f;
+    margin: 20px 0;
+    box-shadow: 0 0 8px rgba(109, 179, 63, 0.3);
+    flex-shrink: 0;
+}
+
+.table-wrapper {
+    overflow-x: auto;
+    border: 2px solid #6db33f;
+    box-shadow: 0 0 15px rgba(109, 179, 63, 0.2);
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
 }
 
 table {
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
     width: 100%;
-    margin-top: 20px;
+    background: #1a1a1a;
+    height: 100%;
 }
 
-th, td {
-    border: 1px solid #444;
-    padding: 8px;
-    text-align: left;
+thead {
+    background: #6db33f;
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
 
 th {
-    background: #eee;
+    color: #000000;
+    padding: 12px 10px;
+    text-align: left;
+    font-weight: 700;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border: none;
 }
 
-input, select, button {
-    margin-bottom: 8px;
+td {
+    padding: 10px;
+    border-bottom: 1px solid #333333;
+    color: #ffffff;
+    font-size: 13px;
+}
+
+tbody {
+    display: block;
+    overflow-y: auto;
+    height: calc(100% - 45px);
+}
+
+thead, tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+tbody tr {
+    transition: all 0.2s ease;
+    background: #1a1a1a;
+}
+
+tbody tr:hover {
+    background: #2a2a2a;
+    box-shadow: inset 4px 0 0 #6db33f;
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
 }
 
 .delete-btn {
-    color: red;
-    font-weight: bold;
-    cursor: pointer;
-    border: none;
     background: none;
+    color: #ff4444;
+    font-size: 11px;
+    padding: 6px 10px;
+    cursor: pointer;
+    border: 2px solid #ff4444;
+    border-radius: 0;
+    transition: all 0.2s ease;
+    box-shadow: none;
+}
+
+.delete-btn:hover {
+    background: #ff4444;
+    color: #000000;
+    transform: scale(1.05);
+    box-shadow: 0 0 12px rgba(255, 68, 68, 0.5);
+}
+
+.delete-btn:active {
+    transform: scale(1.0);
+}
+
+/* Responsive grid for form inputs */
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-bottom: 12px;
+}
+
+/* Scrollbar styling for webkit browsers */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0a0a0a;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #6db33f;
+    border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #5a9633;
+}
+
+/* Code styling */
+code {
+    background: #0a0a0a;
+    padding: 4px 8px;
+    border-radius: 0;
+    border: 1px solid #333333;
+    color: #6db33f;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+}
+
+/* Spring Boot logo effect */
+.container::before {
+    content: '';
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(109, 179, 63, 0.03) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.container > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* Mobile responsive */
+@media (max-width: 1024px) {
+    .container {
+        padding: 15px;
+    }
+    
+    .form-section {
+        padding: 15px;
+    }
+    
+    h2 {
+        font-size: 20px;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+    
+    .form-section {
+        padding: 12px;
+    }
+    
+    table {
+        font-size: 11px;
+    }
+    
+    th, td {
+        padding: 8px 6px;
+    }
+    
+    h2 {
+        font-size: 18px;
+    }
+    
+    button {
+        width: 100%;
+        padding: 10px;
+    }
+}
+
+/* Ensure table takes remaining space */
+.table-wrapper {
+    max-height: calc(100vh - 400px);
 }
