@@ -3,11 +3,10 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>Gateway Route Configuration</title>
-
+	<title>Gateway Route Config</title>
 	<style>
 		body {
-			font-family: Arial, sans-serif;
+			font-family: Arial;
 		}
 
 		table {
@@ -20,21 +19,16 @@
 		td {
 			border: 1px solid #444;
 			padding: 8px;
-			text-align: left;
 		}
 
 		th {
-			background-color: #eee;
-		}
-
-		h2 {
-			margin-top: 30px;
+			background: #eee;
 		}
 
 		input,
 		select,
 		button {
-			margin-bottom: 10px;
+			margin-bottom: 8px;
 		}
 	</style>
 </head>
@@ -43,28 +37,24 @@
 
 	<h2>Add / Update Gateway Route</h2>
 
-	<label>ID (leave empty for new)</label><br>
-	<input type="number" id="id"><br>
+	<input type="number" id="id" placeholder="ID (optional)"><br>
 
-	<label>URL Pattern</label><br>
-	<input type="text" id="urlPattern"><br>
+	<input type="text" id="urlPattern" placeholder="URL Pattern"><br>
 
-	<label>HTTP Method</label><br>
 	<select id="httpMethod">
-		<option value="GET">GET</option>
-		<option value="POST">POST</option>
-		<option value="PUT">PUT</option>
-		<option value="DELETE">DELETE</option>
+		<option>GET</option>
+		<option>POST</option>
+		<option>PUT</option>
+		<option>DELETE</option>
 	</select><br>
 
-	<label>Target URL</label><br>
-	<input type="text" id="targetUrl"><br>
+	<input type="text" id="targetUrl" placeholder="Target URL"><br>
 
-	<label>Auth Required</label><br>
-	<input type="checkbox" id="authRequired"><br>
+	<label>
+		<input type="checkbox" id="authRequired"> Auth Required
+	</label><br>
 
-	<label>Role</label><br>
-	<input type="text" id="role"><br>
+	<input type="text" id="role" placeholder="Role"><br>
 
 	<button onclick="saveRoute()">Save Route</button>
 
@@ -78,9 +68,9 @@
 		<thead>
 			<tr>
 				<th>ID</th>
-				<th>URL Pattern</th>
+				<th>Pattern</th>
 				<th>Method</th>
-				<th>Target URL</th>
+				<th>Target</th>
 				<th>Auth</th>
 				<th>Role</th>
 			</tr>
@@ -90,35 +80,28 @@
 
 	<script>
 		async function loadRoutes() {
-			try {
-				const res = await fetch("/admin/display");
-				if (!res.ok) throw new Error("Failed to fetch");
+			const res = await fetch("/admin/display");
+			if (!res.ok) return;
 
-				const data = await res.json();
-				const tbody = document.getElementById("routesBody");
-				tbody.innerHTML = "";
+			const data = await res.json();
+			const body = document.getElementById("routesBody");
+			body.innerHTML = "";
 
-				data.forEach(r => {
-					const tr = document.createElement("tr");
-
-					tr.innerHTML = `
-                    <td>${r.id ?? ""}</td>
-                    <td>${r.urlPattern}</td>
-                    <td>${r.httpMethod}</td>
-                    <td>${r.targetUrl}</td>
-                    <td>${r.authRequired}</td>
-                    <td>${r.role ?? ""}</td>
-                `;
-
-					tbody.appendChild(tr);
-				});
-			} catch (e) {
-				console.error(e);
-			}
+			data.forEach(r => {
+				body.innerHTML += `
+        <tr>
+            <td>${r.id ?? ""}</td>
+            <td>${r.urlPattern}</td>
+            <td>${r.httpMethod}</td>
+            <td>${r.targetUrl}</td>
+            <td>${r.authRequired}</td>
+            <td>${r.role ?? ""}</td>
+        </tr>`;
+			});
 		}
 
 		async function saveRoute() {
-			const data = {
+			const payload = {
 				id: document.getElementById("id").value || null,
 				urlPattern: document.getElementById("urlPattern").value,
 				httpMethod: document.getElementById("httpMethod").value,
@@ -127,23 +110,22 @@
 				role: document.getElementById("role").value
 			};
 
-			try {
-				const res = await fetch("/admin/routes/save", {
-					method: "POST",
-					headers: {"Content-Type": "application/json"},
-					body: JSON.stringify(data)
-				});
+			const res = await fetch("/admin/routes/save", {
+				method: "POST",
+				headers: {"Content-Type": "application/json"},
+				body: JSON.stringify(payload)
+			});
 
-				if (!res.ok) throw new Error("Save failed");
+			const status = document.getElementById("status");
 
-				document.getElementById("status").innerText = "Saved successfully";
-				loadRoutes(); // 🔥 refresh table after save
-			} catch (e) {
-				document.getElementById("status").innerText = "Error saving route";
+			if (res.ok) {
+				status.innerText = "OK";
+				loadRoutes();
+			} else {
+				status.innerText = "ERROR";
 			}
 		}
 
-		// 🔥 load data on page start
 		window.onload = loadRoutes;
 	</script>
 
